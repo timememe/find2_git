@@ -1,8 +1,103 @@
 const gameBoard = document.getElementById('gameBoard');
-const symbols = ['🍎', '🍌', '🍇', '🍊', '🍓', '🍑', '🍍', '🥝'];
+const timerDisplay = document.getElementById('timer');
+const scoreDisplay = document.getElementById('score');
+const languageSelect = document.getElementById('language-select');
+const cardTypes = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8'];
 let cards = [];
 let flippedCards = [];
 let matchedPairs = 0;
+let score = 0;
+let timeLeft = 60;
+let timerInterval;
+let currentLanguage = 'ru';
+
+const translations = {
+    en: {
+        title: "Find a Pair",
+        instruction: "Find all pairs in 60 seconds!",
+        startGame: "Start Game",
+        victory: "Victory!",
+        allPairsFound: "You found all pairs!",
+        gameOver: "Game Over",
+        timeUp: "Time's up!",
+        playAgain: "Play Again",
+        time: "TIME",
+        score: "SCORE"
+    },
+    ru: {
+        title: "Найди пару",
+        instruction: "Найди все пары за 60 секунд!",
+        startGame: "Начать игру",
+        victory: "Победа!",
+        allPairsFound: "Вы нашли все пары!",
+        gameOver: "Игра окончена",
+        timeUp: "Время вышло!",
+        playAgain: "Играть снова",
+        time: "ВРЕМЯ",
+        score: "ОЧКИ"
+    },
+    kk: {
+        title: "Жұпты табыңыз",
+        instruction: "Барлық жұптарды 60 секунд ішінде табыңыз!",
+        startGame: "Ойынды бастау",
+        victory: "Жеңіс!",
+        allPairsFound: "Сіз барлық жұптарды таптыңыз!",
+        gameOver: "Ойын аяқталды",
+        timeUp: "Уақыт бітті!",
+        playAgain: "Қайта ойнау",
+        time: "УАҚЫТ",
+        score: "ҰПАЙ"
+    },
+    uz: {
+        title: "Juftni toping",
+        instruction: "Barcha juftlarni 60 soniya ichida toping!",
+        startGame: "O'yinni boshlash",
+        victory: "G'alaba!",
+        allPairsFound: "Siz barcha juftlarni topdingiz!",
+        gameOver: "O'yin tugadi",
+        timeUp: "Vaqt tugadi!",
+        playAgain: "Qayta o'ynash",
+        time: "VAQT",
+        score: "OCHKO"
+    },
+    ka: {
+        title: "იპოვე წყვილი",
+        instruction: "იპოვე ყველა წყვილი 60 წამში!",
+        startGame: "თამაშის დაწყება",
+        victory: "გამარჯვება!",
+        allPairsFound: "თქვენ იპოვეთ ყველა წყვილი!",
+        gameOver: "თამაში დასრულდა",
+        timeUp: "დრო ამოიწურა!",
+        playAgain: "თავიდან თამაში",
+        time: "დრო",
+        score: "ქულა"
+    }
+};
+
+function updateLanguage() {
+    currentLanguage = languageSelect.value;
+    const elements = {
+        'start-title': translations[currentLanguage].instruction,
+        'start-instruction': translations[currentLanguage].instruction,
+        'start-button': translations[currentLanguage].startGame,
+        'win-title': translations[currentLanguage].victory,
+        'win-text': translations[currentLanguage].allPairsFound,
+        'end-title': translations[currentLanguage].gameOver,
+        'end-text': translations[currentLanguage].timeUp,
+        'play-again-button': translations[currentLanguage].playAgain,
+        'play-again-button-win': translations[currentLanguage].playAgain
+    };
+
+    for (const [id, text] of Object.entries(elements)) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = text;
+        }
+    }
+
+    updateTimer();
+    updateScore();
+}
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -12,10 +107,11 @@ function shuffleArray(array) {
     return array;
 }
 
-function createCard(symbol) {
+function createCard(cardType) {
     const card = document.createElement('div');
     card.classList.add('card');
-    card.dataset.symbol = symbol;
+    card.dataset.cardType = cardType;
+    card.style.backgroundImage = 'url("assets/card_close.png")';
     card.addEventListener('click', flipCard);
     return card;
 }
@@ -23,7 +119,7 @@ function createCard(symbol) {
 function flipCard() {
     if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
         this.classList.add('flipped');
-        this.textContent = this.dataset.symbol;
+        this.style.backgroundImage = `url('assets/${this.dataset.cardType}.png')`;
         flippedCards.push(this);
 
         if (flippedCards.length === 2) {
@@ -34,29 +130,110 @@ function flipCard() {
 
 function checkMatch() {
     const [card1, card2] = flippedCards;
-    if (card1.dataset.symbol === card2.dataset.symbol) {
+    if (card1.dataset.cardType === card2.dataset.cardType) {
         card1.classList.add('matched');
         card2.classList.add('matched');
         matchedPairs++;
-        if (matchedPairs === symbols.length) {
-            setTimeout(() => alert('Поздравляем! Вы выиграли!'), 300);
+        score += 10;
+        updateScore();
+        if (matchedPairs === cardTypes.length) {
+            clearInterval(timerInterval);
+            setTimeout(showWinPopup, 500);
         }
     } else {
-        card1.classList.remove('flipped');
-        card2.classList.remove('flipped');
-        card1.textContent = '';
-        card2.textContent = '';
+        setTimeout(() => {
+            card1.classList.remove('flipped');
+            card2.classList.remove('flipped');
+            card1.style.backgroundImage = 'url("assets/card_close.png")';
+            card2.style.backgroundImage = 'url("assets/card_close.png")';
+        }, 500);
     }
     flippedCards = [];
 }
 
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerDisplay.innerHTML = `${translations[currentLanguage].time}:<br>${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    if (timeLeft > 0) {
+        timeLeft--;
+    } else {
+        clearInterval(timerInterval);
+        showEndPopup();
+    }
+}
+
+function updateScore() {
+    scoreDisplay.innerHTML = `${translations[currentLanguage].score}:<br>${score}`;
+}
+
+function showStartPopup() {
+    document.getElementById('start-popup').style.display = 'flex';
+}
+
+function hideStartPopup() {
+    document.getElementById('start-popup').style.display = 'none';
+}
+
+function showWinPopup() {
+    document.getElementById('win-popup').style.display = 'flex';
+    document.getElementById('win-score').textContent = score;
+}
+
+function showEndPopup() {
+    document.getElementById('end-popup').style.display = 'flex';
+    document.getElementById('final-score').textContent = score;
+}
+
+function hidePopups() {
+    document.getElementById('win-popup').style.display = 'none';
+    document.getElementById('end-popup').style.display = 'none';
+}
+
+function startGame() {
+    resetGame();
+    hidePopups();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function resetGame() {
+    gameBoard.innerHTML = '';
+    cards = [];
+    flippedCards = [];
+    matchedPairs = 0;
+    score = 0;
+    timeLeft = 60;
+    clearInterval(timerInterval);
+    updateScore();
+    updateTimer();
+    initGame();
+}
+
 function initGame() {
-    const gameSymbols = shuffleArray([...symbols, ...symbols]);
-    gameSymbols.forEach(symbol => {
-        const card = createCard(symbol);
+    updateLanguage();
+    const gameCardTypes = shuffleArray([...cardTypes, ...cardTypes]);
+    gameCardTypes.forEach(cardType => {
+        const card = createCard(cardType);
         gameBoard.appendChild(card);
         cards.push(card);
     });
 }
 
+document.getElementById('start-button').addEventListener('click', () => {
+    hideStartPopup();
+    startGame();
+});
+
+document.getElementById('play-again-button').addEventListener('click', () => {
+    hidePopups();
+    startGame();
+});
+
+document.getElementById('play-again-button-win').addEventListener('click', () => {
+    hidePopups();
+    startGame();
+});
+
+languageSelect.addEventListener('change', updateLanguage);
+showStartPopup();
 initGame();
