@@ -14,6 +14,7 @@
         let timeLeft = 60;
         let timerInterval;
         let currentLanguage = 'ru';
+        let preloadedImages = {};
 
         const translations = {
             en: {
@@ -78,6 +79,10 @@
             }
         };
 
+        function getImageUrl(imageName) {
+            return `${baseUrl}${imageName}?v=${cacheBuster}`;
+        }
+
         function preloadImages() {
             return new Promise((resolve, reject) => {
                 let loadedCount = 0;
@@ -94,7 +99,7 @@
                 const closeCard = new Image();
                 closeCard.onload = onLoad;
                 closeCard.onerror = reject;
-                closeCard.src = `${baseUrl}card_close.png`;
+                closeCard.src = getImageUrl('card_close.png');
                 preloadedImages['card_close'] = closeCard;
 
                 // Загрузка карточек
@@ -102,7 +107,7 @@
                     const img = new Image();
                     img.onload = onLoad;
                     img.onerror = reject;
-                    img.src = `${baseUrl}${cardType}.png`;
+                    img.src = getImageUrl(`${cardType}.png`);
                     preloadedImages[cardType] = img;
                 });
             });
@@ -280,6 +285,7 @@
         }).catch(error => {
             console.error('Failed to load images:', error);
             // Здесь можно добавить обработку ошибки загрузки изображений
+            alert('Failed to load game images. Please refresh the page and try again.');
         });
         //showStartPopup();
         //initGame();
