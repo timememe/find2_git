@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Найди пару</title>
+    <style>
+        @font-face {
+            font-family: 'PlutoOreo-Black';
+            src: url('assets/PlutoOreo-Black.otf') format('opentype');
+        }
+
+        body {
+            font-family: 'PlutoOreo-Black', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #0058C9;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            animation: pulseShadow 3s ease-in-out infinite;
+            border: 10px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulseShadow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 18vh;
+            height: 18vh;
+        }
+
+        .control-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #2c211f;
+            font-weight: bold;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+            font-size: 2.5vh;
+            text-transform: uppercase;
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
+            line-height: 1.2;
+        }
+
+        .cookie-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .card {
+            aspect-ratio: 1 / 1;
+            background-color: transparent;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            background-size: cover;
+            background-position: center;
+            transform: scaleX(-1);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg) scaleX(-1);
+        }
+
+        .card.matched {
+            opacity: 0.7;
+        }
+
+        .language-selector {
+            margin-top: 20px;
+        }
+
+        .language-selector select {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .popup {
+            background-color: #0058C9;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 80%;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 88, 201, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .popup h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .popup p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+        }
+
+        .score-display img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .score-display .score {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c211f;
+            text-transform: uppercase;
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .start-button, .play-again-button {
+            background-color: white;
+            color: #0058C9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .start-button:hover, .play-again-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .tutorial-image {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 480px) {
+            .game-board {
+                max-width: 300px;
+            }
+            .card {
+                font-size: 18px;
+            }
+            .control-item {
+                width: 15vh;
+                height: 15vh;
+            }
+            .control-text {
+                font-size: 2vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="start-popup" class="popup-overlay">
+        <div class="popup">
+            <h2 id="start-title">Инструкция</h2>
+            <p id="start-instruction">Найди все пары карточек за 60 секунд!</p>
+            <img src="assets/tut.png" alt="Tutorial" class="tutorial-image">
+            <button id="start-button" class="start-button">Начать игру</button>
+        </div>
+    </div>
+
+    <div id="win-popup" class="popup-overlay" style="display: none;">
+        <div class="popup">
+            <h2 id="win-title">Победа!</h2>
+            <p id="win-text">Вы нашли все пары!</p>
+            <div class="score-display">
+                <img src="assets/cookie_back.png" alt="Score Background">
+                <div id="win-score" class="score">0</div>
+            </div>
+            <button id="play-again-button-win" class="play-again-button">Играть снова</button>
+        </div>
+    </div>
+
+    <div id="end-popup" class="popup-overlay" style="display: none;">
+        <div class="popup">
+            <h2 id="end-title">Игра окончена</h2>
+            <p id="end-text">Время вышло!</p>
+            <div class="score-display">
+                <img src="assets/cookie_back.png" alt="Score Background">
+                <div id="final-score" class="score">0</div>
+            </div>
+            <button id="play-again-button" class="play-again-button">Играть снова</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <img src="assets/logo.png" alt="Game Logo" class="logo">
+        <div id="gameBoard" class="game-board"></div>
+        <div class="game-controls">
+            <div class="control-item">
+                <span class="control-text" id="timer">ВРЕМЯ:<br>60</span>
+                <img src="assets/cookie_back.png" alt="Cookie" class="cookie-image">
+            </div>
+            <div class="control-item">
+                <span class="control-text" id="score">ОЧКИ:<br>0</span>
+                <img src="assets/cookie_back.png" alt="Cookie" class="cookie-image">
+            </div>
+        </div>
+        <div class="language-selector">
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+                <option value="kk">Қазақша</option>
+                <option value="uz">O'zbek</option>
+                <option value="ka">ქართული</option>
+            </select>
+        </div>
+    </div>
+    <script>
+        const gameBoard = document.getElementById('gameBoard');
+        const timerDisplay = document.getElementById('timer');
+        const scoreDisplay = document.getElementById('score');
+        const languageSelect = document.getElementById('language-select');
+        const cardTypes = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8'];
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let score = 0;
+        let timeLeft = 60;
+        let timerInterval;
+        let currentLanguage = 'ru';
+
+        const translations = {
+            en: {
+                title: "Find a Pair",
+                instruction: "Find all pairs in 60 seconds!",
+                startGame: "Start Game",
+                victory: "Victory!",
+                allPairsFound: "You found all pairs!",
+                gameOver: "Game Over",
+                timeUp: "Time's up!",
+                playAgain: "Play Again",
+                time: "TIME",
+                score: "SCORE"
+            },
+            ru: {
+                title: "Найди пару",
+                instruction: "Найди все пары за 60 секунд!",
+                startGame: "Начать игру",
+                victory: "Победа!",
+                allPairsFound: "Вы нашли все пары!",
+                gameOver: "Игра окончена",
+                timeUp: "Время вышло!",
+                playAgain: "Играть снова",
+                time: "ВРЕМЯ",
+                score: "ОЧКИ"
+            },
+            kk: {
+                title: "Жұпты табыңыз",
+                instruction: "Барлық жұптарды 60 секунд ішінде табыңыз!",
+                startGame: "Ойынды бастау",
+                victory: "Жеңіс!",
+                allPairsFound: "Сіз барлық жұптарды таптыңыз!",
+                gameOver: "Ойын аяқталды",
+                timeUp: "Уақыт бітті!",
+                playAgain: "Қайта ойнау",
+                time: "УАҚЫТ",
+                score: "ҰПАЙ"
+            },
+            uz: {
+                title: "Juftni toping",
+                instruction: "Barcha juftlarni 60 soniya ichida toping!",
+                startGame: "O'yinni boshlash",
+                victory: "G'alaba!",
+                allPairsFound: "Siz barcha juftlarni topdingiz!",
+                gameOver: "O'yin tugadi",
+                timeUp: "Vaqt tugadi!",
+                playAgain: "Qayta o'ynash",
+                time: "VAQT",
+                score: "OCHKO"
+            },
+            ka: {
+                title: "იპოვე წყვილი",
+                instruction: "იპოვე ყველა წყვილი 60 წამში!",
+                startGame: "თამაშის დაწყება",
+                victory: "გამარჯვება!",
+                allPairsFound: "თქვენ იპოვეთ ყველა წყვილი!",
+                gameOver: "თამაში დასრულდა",
+                timeUp: "დრო ამოიწურა!",
+                playAgain: "თავიდან თამაში",
+                time: "დრო",
+                score: "ქულა"
+            }
+        };
+
+        function updateLanguage() {
+            currentLanguage = languageSelect.value;
+            const elements = {
+                'start-title': translations[currentLanguage].instruction,
+                'start-instruction': translations[currentLanguage].instruction,
+                'start-button': translations[currentLanguage].startGame,
+                'win-title': translations[currentLanguage].victory,
+                'win-text': translations[currentLanguage].allPairsFound,
+                'end-title': translations[currentLanguage].gameOver,
+                'end-text': translations[currentLanguage].timeUp,
+                'play-again-button': translations[currentLanguage].playAgain,
+                'play-again-button-win': translations[currentLanguage].playAgain
+            };
+
+            for (const [id, text] of Object.entries(elements)) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = text;
+                }
+            }
+
+            updateTimer();
+            updateScore();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createCard(cardType) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.cardType = cardType;
+            card.style.backgroundImage = 'url("assets/card_close.png")';
+            card.addEventListener('click', flipCard);
+            return card;
+        }
+
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
+                this.classList.add('flipped');
+                this.style.backgroundImage = `url('assets/${this.dataset.cardType}.png')`;
+                flippedCards.push(this);
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.cardType === card2.dataset.cardType) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                score += 10;
+                updateScore();
+                if (matchedPairs === cardTypes.length) {
+                    clearInterval(timerInterval);
+                    setTimeout(showWinPopup, 500);
+                }
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.style.backgroundImage = 'url("assets/card_close.png")';
+                    card2.style.backgroundImage = 'url("assets/card_close.png")';
+                }, 500);
+            }
+            flippedCards = [];
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.innerHTML = `${translations[currentLanguage].time}:<br>${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(timerInterval);
+                showEndPopup();
+            }
+        }
+
+        function updateScore() {
+            scoreDisplay.innerHTML = `${translations[currentLanguage].score}:<br>${score}`;
+        }
+
+        function showStartPopup() {
+            document.getElementById('start-popup').style.display = 'flex';
+        }
+
+        function hideStartPopup() {
+            document.getElementById('start-popup').style.display = 'none';
+        }
+
+        function showWinPopup() {
+            document.getElementById('win-popup').style.display = 'flex';
+            document.getElementById('win-score').textContent = score;
+        }
+
+        function showEndPopup() {
+            document.getElementById('end-popup').style.display = 'flex';
+            document.getElementById('final-score').textContent = score;
+        }
+
+        function hidePopups() {
+            document.getElementById('win-popup').style.display = 'none';
+            document.getElementById('end-popup').style.display = 'none';
+        }
+
+        function startGame() {
+            resetGame();
+            hidePopups();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function resetGame() {
+            gameBoard.innerHTML = '';
+            cards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            score = 0;
+            timeLeft = 60;
+            clearInterval(timerInterval);
+            updateScore();
+            updateTimer();
+            initGame();
+        }
+
+        function initGame() {
+            updateLanguage();
+            const gameCardTypes = shuffleArray([...cardTypes, ...cardTypes]);
+            gameCardTypes.forEach(cardType => {
+                const card = createCard(cardType);
+                gameBoard.appendChild(card);
+                cards.push(card);
+            });
+        }
+
+        document.getElementById('start-button').addEventListener('click', () => {
+            hideStartPopup();
+            startGame();
+        });
+
+        document.getElementById('play-again-button').addEventListener('click', () => {
+            hidePopups();
+            startGame();
+        });
+
+        document.getElementById('play-again-button-win').addEventListener('click', () => {
+            hidePopups();
+            startGame();
+        });
+
+        languageSelect.addEventListener('change', updateLanguage);
+        showStartPopup();
+        initGame();
+    </script>
+</body>
+</html>
