@@ -4,65 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Найди пару</title>
-    <link rel="stylesheet" href="https://raw.githubusercontent.com/timememe/find2_git/main/styles_out.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/styles.css">
 </head>
 <body>
     <div id="memory-game-container">
+        <!-- Здесь размещается весь HTML-код вашей игры -->
         <div id="start-popup" class="popup-overlay">
             <div class="popup">
                 <h2 id="start-title">Инструкция</h2>
                 <p id="start-instruction">Найди все пары карточек за 60 секунд!</p>
-                <img src="https://raw.githubusercontent.com/timememe/find2_git/main/assets/tut.png" alt="Tutorial" class="tutorial-image">
-                <button id="start-button">Начать игру</button>
+                <img src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/tut.png" alt="Tutorial" class="tutorial-image">
+                <button id="start-button" class="start-button">Начать игру</button>
             </div>
         </div>
-
+    
         <div id="win-popup" class="popup-overlay" style="display: none;">
             <div class="popup">
                 <h2 id="win-title">Победа!</h2>
                 <p id="win-text">Вы нашли все пары!</p>
                 <div class="score-display">
-                    <img src="https://raw.githubusercontent.com/timememe/find2_git/main/assets/cookie_back.png" alt="Score Background">
+                    <img src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/cookie_back.png" alt="Score Background">
                     <div id="win-score" class="score">0</div>
                 </div>
-                <button id="play-again-button-win">Играть снова</button>
+                <button id="play-again-button-win" class="play-again-button">Играть снова</button>
             </div>
         </div>
-
+    
         <div id="end-popup" class="popup-overlay" style="display: none;">
             <div class="popup">
                 <h2 id="end-title">Игра окончена</h2>
                 <p id="end-text">Время вышло!</p>
                 <div class="score-display">
-                    <img src="https://raw.githubusercontent.com/timememe/find2_git/main/assets/cookie_back.png" alt="Score Background">
+                    <img src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/cookie_back.png" alt="Score Background">
                     <div id="final-score" class="score">0</div>
                 </div>
-                <button id="play-again-button">Играть снова</button>
+                <button id="play-again-button" class="play-again-button">Играть снова</button>
             </div>
         </div>
-
+    
         <div class="game-container">
-            <img src="https://raw.githubusercontent.com/timememe/find2_git/main/assets/logo.png" alt="Game Logo" class="logo">
+            <img src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/logo.png" alt="Game Logo" class="logo">
             <div id="gameBoard" class="game-board"></div>
             <div class="game-controls">
                 <div class="control-item">
-                    <span id="timer" class="control-text">ВРЕМЯ:<br>60</span>
-                    <img src="https://raw.githubusercontent.com/timememe/find2_git/main/assets/cookie_back.png" alt="Cookie" class="cookie-image">
+                    <span class="control-text" id="timer">ВРЕМЯ:<br>60</span>
+                    <img src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/cookie_back.png" alt="Cookie" class="cookie-image">
                 </div>
                 <div class="control-item">
-                    <span id="score" class="control-text">ОЧКИ:<br>0</span>
-                    <img src="https://raw.githubusercontent.com/timememe/find2_git/main/assets/cookie_back.png" alt="Cookie" class="cookie-image">
+                    <span class="control-text" id="score">ОЧКИ:<br>0</span>
+                    <img src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/cookie_back.png" alt="Cookie" class="cookie-image">
                 </div>
             </div>
-            <select id="language-select" class="language-selector">
-                <option value="en">English</option>
-                <option value="ru" selected>Русский</option>
-                <option value="kk">Қазақша</option>
-                <option value="uz">O'zbek</option>
-                <option value="ka">ქართული</option>
-            </select>
+            <div class="language-selector">
+                <select id="language-select">
+                    <option value="en">English</option>
+                    <option value="ru">Русский</option>
+                    <option value="kk">Қазақша</option>
+                    <option value="uz">O'zbek</option>
+                    <option value="ka">ქართული</option>
+                </select>
+            </div>
         </div>
     </div>
-    <script src="https://raw.githubusercontent.com/timememe/find2_git/main/script_out.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/timememe/find2_git@main/script.js"></script>
 </body>
 </html>

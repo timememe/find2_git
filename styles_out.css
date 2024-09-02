@@ -1,6 +1,17 @@
 #memory-game-container {
     font-family: 'PlutoOreo-Black', Arial, sans-serif;
-    src: url('assets/PlutoOreo-Black.otf') format('opentype');
+    background-color: #0058C9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#memory-game-container * {
+    box-sizing: border-box;
 }
 
 #memory-game-container .game-container {
@@ -29,26 +40,12 @@
     }
 }
 
-.logo {
-    max-width: 200px;
-    margin-bottom: 20px;
-}
-
-@keyframes pulseShadow {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-    }
-}
-
-h1 {
+#memory-game-container h1 {
     color: white;
     margin-bottom: 20px;
 }
 
-.game-board {
+#memory-game-container .game-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
@@ -57,14 +54,14 @@ h1 {
     margin-bottom: 20px;
 }
 
-.game-controls {
+#memory-game-container .game-controls {
     display: flex;
     justify-content: space-around;
     width: 100%;
     margin-bottom: 20px;
 }
 
-.control-item {
+#memory-game-container .control-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,7 +71,7 @@ h1 {
     height: 18vh;
 }
 
-.control-text {
+#memory-game-container .control-text {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -90,21 +87,13 @@ h1 {
     line-height: 1.2;
 }
 
-.cookie-image {
+#memory-game-container .cookie-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    max-width: 400px;
-    width: 100%;
-}
-
-.card {
+#memory-game-container .card {
     aspect-ratio: 1 / 1;
     background-color: transparent;
     border-radius: 5px;
@@ -118,24 +107,24 @@ h1 {
     transform: scaleX(-1);
 }
 
-.card.flipped {
+#memory-game-container .card.flipped {
     transform: rotateY(180deg) scaleX(-1);
 }
 
-.card.matched {
+#memory-game-container .card.matched {
     opacity: 0.7;
 }
 
-.language-selector {
+#memory-game-container .language-selector {
     margin-top: 20px;
 }
 
-.language-selector select {
+#memory-game-container .language-selector select {
     padding: 5px;
     font-size: 16px;
 }
 
-.popup-overlay {
+#memory-game-container .popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -149,7 +138,7 @@ h1 {
     z-index: 1000;
 }
 
-.popup {
+#memory-game-container .popup {
     background-color: #0058C9;
     border-radius: 20px;
     padding: 30px;
@@ -164,30 +153,30 @@ h1 {
     align-items: center;
 }
 
-.popup h2 {
+#memory-game-container .popup h2 {
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-.popup p {
+#memory-game-container .popup p {
     font-size: 18px;
     margin-bottom: 20px;
 }
 
-.score-display {
+#memory-game-container .score-display {
     position: relative;
     width: 180px;
     height: 180px;
     margin: 0 auto;
 }
 
-.score-display img {
+#memory-game-container .score-display img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.score-display .score {
+#memory-game-container .score-display .score {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -201,7 +190,8 @@ h1 {
     line-height: 1.2;
 }
 
-.start-button, .play-again-button {
+#memory-game-container .start-button,
+#memory-game-container .play-again-button {
     background-color: white;
     color: #0058C9;
     border: none;
@@ -212,11 +202,12 @@ h1 {
     transition: background-color 0.3s;
 }
 
-.start-button:hover, .play-again-button:hover {
+#memory-game-container .start-button:hover,
+#memory-game-container .play-again-button:hover {
     background-color: #e0e0e0;
 }
 
-.tutorial-image {
+#memory-game-container .tutorial-image {
     max-width: 100%;
     max-height: 300px;
     object-fit: contain;
@@ -224,17 +215,17 @@ h1 {
 }
 
 @media (max-width: 480px) {
-    .game-board {
+    #memory-game-container .game-board {
         max-width: 300px;
     }
-    .card {
+    #memory-game-container .card {
         font-size: 18px;
     }
-    .control-item {
+    #memory-game-container .control-item {
         width: 15vh;
         height: 15vh;
     }
-    .control-text {
+    #memory-game-container .control-text {
         font-size: 2vh;
     }
 }

@@ -5,140 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Найди пару</title>
     <style>
-        @font-face {
-            font-family: 'PlutoOreo-Black';
-            src: url('assets/PlutoOreo-Black.otf') format('opentype');
-        }
-
-        body {
-            font-family: 'PlutoOreo-Black', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #0058C9;
-        }
-
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+        /* Изолированные стили для игры Memory */
+        .memory-game-container {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            animation: pulseShadow 3s ease-in-out infinite;
-            border: 10px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
+            box-sizing: border-box;
         }
 
-        .logo {
-            max-width: 200px;
-            margin-bottom: 20px;
+        .memory-game-container * {
+            box-sizing: border-box;
         }
 
-        @keyframes pulseShadow {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        h1 {
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 400px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .game-controls {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .control-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 18vh;
-            height: 18vh;
-        }
-
-        .control-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #2c211f;
-            font-weight: bold;
-            z-index: 1;
-            text-align: center;
-            width: 100%;
-            font-size: 2.5vh;
-            text-transform: uppercase;
-            text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
-            line-height: 1.2;
-        }
-
-        .cookie-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .card {
-            aspect-ratio: 1 / 1;
-            background-color: transparent;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-            background-size: cover;
-            background-position: center;
-            transform: scaleX(-1);
-        }
-
-        .card.flipped {
-            transform: rotateY(180deg) scaleX(-1);
-        }
-
-        .card.matched {
-            opacity: 0.7;
-        }
-
-        .language-selector {
-            margin-top: 20px;
-        }
-
-        .language-selector select {
-            padding: 5px;
-            font-size: 16px;
-        }
-
-        .popup-overlay {
+        .memory-game-container .popup-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -148,156 +28,183 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(10px);
             z-index: 1000;
         }
 
-        .popup {
-            background-color: #0058C9;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 80%;
+        .memory-game-container .popup {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(0, 88, 201, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(5px);
+            max-width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .memory-game-container h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .memory-game-container .tutorial-image,
+        .memory-game-container .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .memory-game-container button {
+            background-color: #4CAF50;
+            border: none;
             color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .memory-game-container button:hover {
+            background-color: #45a049;
+        }
+
+        .memory-game-container .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .memory-game-container .game-controls {
             display: flex;
-            flex-direction: column;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .memory-game-container .control-item {
+            display: flex;
             align-items: center;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
         }
 
-        .popup h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
+        .memory-game-container .control-text {
+            font-weight: bold;
+            margin-right: 10px;
         }
 
-        .popup p {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .memory-game-container .cookie-image {
+            width: 40px;
+            height: 40px;
         }
 
-        .score-display {
+        .memory-game-container .language-selector {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .memory-game-container .language-selector button {
+            margin: 5px;
+            background-color: #008CBA;
+        }
+
+        .memory-game-container .language-selector button:hover {
+            background-color: #007B9A;
+        }
+
+        .memory-game-container .score-display {
             position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 0 auto;
+            display: inline-block;
         }
 
-        .score-display img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .score-display .score {
+        .memory-game-container .score {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 24px;
             font-weight: bold;
-            color: #2c211f;
-            text-transform: uppercase;
-            text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
-            text-align: center;
-            line-height: 1.2;
+            color: #333;
         }
 
-        .start-button, .play-again-button {
-            background-color: white;
-            color: #0058C9;
-            border: none;
-            padding: 10px 20px;
-            font-size: 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .start-button:hover, .play-again-button:hover {
-            background-color: #e0e0e0;
-        }
-
-        .tutorial-image {
-            max-width: 100%;
-            max-height: 300px;
-            object-fit: contain;
-            margin: 20px 0;
-        }
-
-        @media (max-width: 480px) {
-            .game-board {
-                max-width: 300px;
+        @media (max-width: 600px) {
+            .memory-game-container .game-board {
+                grid-template-columns: repeat(3, 1fr);
             }
-            .card {
-                font-size: 18px;
+            
+            .memory-game-container .game-controls {
+                flex-direction: column;
+                align-items: center;
             }
-            .control-item {
-                width: 15vh;
-                height: 15vh;
-            }
-            .control-text {
-                font-size: 2vh;
+            
+            .memory-game-container .control-item {
+                margin-bottom: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="start-popup" class="popup-overlay">
-        <div class="popup">
-            <h2 id="start-title">Инструкция</h2>
-            <p id="start-instruction">Найди все пары карточек за 60 секунд!</p>
-            <img src="assets/tut.png" alt="Tutorial" class="tutorial-image">
-            <button id="start-button" class="start-button">Начать игру</button>
+    <div class="memory-game-container">
+        <div id="start-popup" class="popup-overlay">
+            <div class="popup">
+                <h2 id="start-title">Инструкция</h2>
+                <p>Найди все пары карточек за 60 секунд!</p>
+                <img src="assets/tut.png" alt="Tutorial" class="tutorial-image">
+                <button onclick="startGame()">Начать игру</button>
+            </div>
         </div>
-    </div>
 
-    <div id="win-popup" class="popup-overlay" style="display: none;">
-        <div class="popup">
-            <h2 id="win-title">Победа!</h2>
-            <p id="win-text">Вы нашли все пары!</p>
-            <div class="score-display">
-                <img src="assets/cookie_back.png" alt="Score Background">
-                <div id="win-score" class="score">0</div>
+        <div id="win-popup" class="popup-overlay" style="display: none;">
+            <div class="popup">
+                <h2 id="win-title">Победа!</h2>
+                <p>Вы нашли все пары!</p>
+                <div class="score-display">
+                    <img src="assets/cookie_back.png" alt="Score Background">
+                    <div id="win-score" class="score">0</div>
+                </div>
+                <button onclick="restartGame()">Играть снова</button>
             </div>
-            <button id="play-again-button-win" class="play-again-button">Играть снова</button>
         </div>
-    </div>
 
-    <div id="end-popup" class="popup-overlay" style="display: none;">
-        <div class="popup">
-            <h2 id="end-title">Игра окончена</h2>
-            <p id="end-text">Время вышло!</p>
-            <div class="score-display">
-                <img src="assets/cookie_back.png" alt="Score Background">
-                <div id="final-score" class="score">0</div>
+        <div id="end-popup" class="popup-overlay" style="display: none;">
+            <div class="popup">
+                <h2 id="end-title">Игра окончена</h2>
+                <p>Время вышло!</p>
+                <div class="score-display">
+                    <img src="assets/cookie_back.png" alt="Score Background">
+                    <div id="final-score" class="score">0</div>
+                </div>
+                <button onclick="restartGame()">Играть снова</button>
             </div>
-            <button id="play-again-button" class="play-again-button">Играть снова</button>
         </div>
-    </div>
 
-    <div class="game-container">
-        <img src="assets/logo.png" alt="Game Logo" class="logo">
-        <div id="gameBoard" class="game-board"></div>
-        <div class="game-controls">
-            <div class="control-item">
-                <span class="control-text" id="timer">ВРЕМЯ:<br>60</span>
-                <img src="assets/cookie_back.png" alt="Cookie" class="cookie-image">
+        <div class="game-container">
+            <img src="assets/logo.png" alt="Game Logo" class="logo">
+            <div id="gameBoard" class="game-board"></div>
+            <div class="game-controls">
+                <div class="control-item">
+                    <span id="timer" class="control-text">ВРЕМЯ:<br>60</span>
+                    <img src="assets/cookie_back.png" alt="Cookie" class="cookie-image">
+                </div>
+                <div class="control-item">
+                    <span id="score" class="control-text">ОЧКИ:<br>0</span>
+                    <img src="assets/cookie_back.png" alt="Cookie" class="cookie-image">
+                </div>
             </div>
-            <div class="control-item">
-                <span class="control-text" id="score">ОЧКИ:<br>0</span>
-                <img src="assets/cookie_back.png" alt="Cookie" class="cookie-image">
+            <div class="language-selector">
+                <button onclick="changeLanguage('en')">English</button>
+                <button onclick="changeLanguage('ru')">Русский</button>
+                <button onclick="changeLanguage('kz')">Қазақша</button>
+                <button onclick="changeLanguage('uz')">O'zbek</button>
+                <button onclick="changeLanguage('ge')">ქართული</button>
             </div>
-        </div>
-        <div class="language-selector">
-            <select id="language-select">
-                <option value="en">English</option>
-                <option value="ru">Русский</option>
-                <option value="kk">Қазақша</option>
-                <option value="uz">O'zbek</option>
-                <option value="ka">ქართული</option>
-            </select>
         </div>
     </div>
     <script>
