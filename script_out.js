@@ -5,8 +5,8 @@
         const timerDisplay = container.querySelector('#timer');
         const scoreDisplay = container.querySelector('#score');
         const languageSelect = container.querySelector('#language-select');
-        const cardTypes = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8'];
         const baseUrl = 'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/';
+        const cardTypes = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8'];
         let cards = [];
         let flippedCards = [];
         let matchedPairs = 0;
@@ -123,7 +123,8 @@
         function flipCard() {
             if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
                 this.classList.add('flipped');
-                this.style.backgroundImage = `url('${baseUrl}${this.dataset.cardType}.png')`;
+                const cardType = this.dataset.cardType;
+                this.style.backgroundImage = `url("${baseUrl}${cardType}.png")`;
                 flippedCards.push(this);
 
                 if (flippedCards.length === 2) {
