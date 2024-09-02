@@ -5,14 +5,8 @@
         const timerDisplay = container.querySelector('#timer');
         const scoreDisplay = container.querySelector('#score');
         const languageSelect = container.querySelector('#language-select');
-        const cardTypes = ['https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_1', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_2', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_3', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_4', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_5', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_6', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_7', 
-            'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_8'];
+        const cardTypes = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8'];
+        const baseUrl = 'https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/';
         let cards = [];
         let flippedCards = [];
         let matchedPairs = 0;
@@ -121,7 +115,7 @@
             const card = document.createElement('div');
             card.classList.add('card');
             card.dataset.cardType = cardType;
-            card.style.backgroundImage = 'url("https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_close.png")';
+            card.style.backgroundImage = `url("${baseUrl}card_close.png")`;
             card.addEventListener('click', flipCard);
             return card;
         }
@@ -129,7 +123,7 @@
         function flipCard() {
             if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
                 this.classList.add('flipped');
-                this.style.backgroundImage = `url('assets/${this.dataset.cardType}.png')`;
+                this.style.backgroundImage = `url('${baseUrl}${this.dataset.cardType}.png')`;
                 flippedCards.push(this);
 
                 if (flippedCards.length === 2) {
@@ -154,8 +148,8 @@
                 setTimeout(() => {
                     card1.classList.remove('flipped');
                     card2.classList.remove('flipped');
-                    card1.style.backgroundImage = 'url("https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_close.png")';
-                    card2.style.backgroundImage = 'url("https://cdn.jsdelivr.net/gh/timememe/find2_git@main/assets/card_close.png")';
+                    card1.style.backgroundImage = `url("${baseUrl}card_close.png")`;
+                    card2.style.backgroundImage = `url("${baseUrl}card_close.png")`;
                 }, 500);
             }
             flippedCards = [];
