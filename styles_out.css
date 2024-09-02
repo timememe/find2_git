@@ -1,0 +1,236 @@
+@font-face {
+    font-family: 'PlutoOreo-Black';
+    src: url('assets/PlutoOreo-Black.otf') format('opentype');
+}
+
+body {
+    font-family: 'PlutoOreo-Black', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #0058C9;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    animation: pulseShadow 3s ease-in-out infinite;
+    border: 10px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.logo {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+@keyframes pulseShadow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+}
+
+h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 18vh;
+    height: 18vh;
+}
+
+.control-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #2c211f;
+    font-weight: bold;
+    z-index: 1;
+    text-align: center;
+    width: 100%;
+    font-size: 2.5vh;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
+    line-height: 1.2;
+}
+
+.cookie-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.card {
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    background-size: cover;
+    background-position: center;
+    transform: scaleX(-1);
+}
+
+.card.flipped {
+    transform: rotateY(180deg) scaleX(-1);
+}
+
+.card.matched {
+    opacity: 0.7;
+}
+
+.language-selector {
+    margin-top: 20px;
+}
+
+.language-selector select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.popup {
+    background-color: #0058C9;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 88, 201, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.popup p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.score-display {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+}
+
+.score-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.score-display .score {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c211f;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
+    text-align: center;
+    line-height: 1.2;
+}
+
+.start-button, .play-again-button {
+    background-color: white;
+    color: #0058C9;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.start-button:hover, .play-again-button:hover {
+    background-color: #e0e0e0;
+}
+
+.tutorial-image {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin: 20px 0;
+}
+
+@media (max-width: 480px) {
+    .game-board {
+        max-width: 300px;
+    }
+    .card {
+        font-size: 18px;
+    }
+    .control-item {
+        width: 15vh;
+        height: 15vh;
+    }
+    .control-text {
+        font-size: 2vh;
+    }
+}
