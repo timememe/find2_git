@@ -1,19 +1,9 @@
-@font-face {
-    font-family: 'PlutoOreo-Black';
+#memory-game-container {
+    font-family: 'PlutoOreo-Black', Arial, sans-serif;
     src: url('assets/PlutoOreo-Black.otf') format('opentype');
 }
 
-body {
-    font-family: 'PlutoOreo-Black', Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #0058C9;
-}
-
-.game-container {
+#memory-game-container .game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,6 +13,20 @@ body {
     animation: pulseShadow 3s ease-in-out infinite;
     border: 10px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
+}
+
+#memory-game-container .logo {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+@keyframes pulseShadow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    }
 }
 
 .logo {
