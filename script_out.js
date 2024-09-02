@@ -78,6 +78,36 @@
             }
         };
 
+        function preloadImages() {
+            return new Promise((resolve, reject) => {
+                let loadedCount = 0;
+                const totalImages = cardTypes.length + 1; // +1 for card_close.png
+
+                function onLoad() {
+                    loadedCount++;
+                    if (loadedCount === totalImages) {
+                        resolve();
+                    }
+                }
+
+                // Загрузка card_close.png
+                const closeCard = new Image();
+                closeCard.onload = onLoad;
+                closeCard.onerror = reject;
+                closeCard.src = `${baseUrl}card_close.png`;
+                preloadedImages['card_close'] = closeCard;
+
+                // Загрузка карточек
+                cardTypes.forEach(cardType => {
+                    const img = new Image();
+                    img.onload = onLoad;
+                    img.onerror = reject;
+                    img.src = `${baseUrl}${cardType}.png`;
+                    preloadedImages[cardType] = img;
+                });
+            });
+        }
+
         function updateLanguage() {
             currentLanguage = languageSelect.value;
             const elements = {
@@ -115,7 +145,7 @@
             const card = document.createElement('div');
             card.classList.add('card');
             card.dataset.cardType = cardType;
-            card.style.backgroundImage = `url(${new URL('card_close.png', baseUrl)})`;
+            card.style.backgroundImage = `url(${preloadedImages['card_close'].src})`;
             card.addEventListener('click', flipCard);
             return card;
         }
@@ -124,7 +154,7 @@
             if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
                 this.classList.add('flipped');
                 const cardType = this.dataset.cardType;
-                this.style.backgroundImage = `url(${new URL(cardType + '.png', baseUrl)})`;
+                this.style.backgroundImage = `url(${preloadedImages[cardType].src})`;
                 flippedCards.push(this);
 
                 if (flippedCards.length === 2) {
@@ -149,8 +179,8 @@
                 setTimeout(() => {
                     card1.classList.remove('flipped');
                     card2.classList.remove('flipped');
-                    card1.style.backgroundImage = `url(${new URL('card_close.png', baseUrl)})`;
-                    card2.style.backgroundImage = `url(${new URL('card_close.png', baseUrl)})`;
+                    card1.style.backgroundImage = `url(${preloadedImages['card_close'].src})`;
+                    card2.style.backgroundImage = `url(${preloadedImages['card_close'].src})`;
                 }, 500);
             }
             flippedCards = [];
@@ -239,9 +269,20 @@
             startGame();
         });
 
+        
+
         languageSelect.addEventListener('change', updateLanguage);
-        showStartPopup();
-        initGame();
+
+        // Загрузка изображений перед началом игры
+        preloadImages().then(() => {
+            showStartPopup();
+            initGame();
+        }).catch(error => {
+            console.error('Failed to load images:', error);
+            // Здесь можно добавить обработку ошибки загрузки изображений
+        });
+        //showStartPopup();
+        //initGame();
     }
 
     document.addEventListener('DOMContentLoaded', initMemoryGame);
