@@ -115,7 +115,7 @@
             const card = document.createElement('div');
             card.classList.add('card');
             card.dataset.cardType = cardType;
-            card.style.backgroundImage = `url("${baseUrl}card_close.png")`;
+            card.style.backgroundImage = `url(${new URL('card_close.png', baseUrl)})`;
             card.addEventListener('click', flipCard);
             return card;
         }
@@ -124,7 +124,7 @@
             if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
                 this.classList.add('flipped');
                 const cardType = this.dataset.cardType;
-                this.style.backgroundImage = `url("${baseUrl}${cardType}.png")`;
+                this.style.backgroundImage = `url(${new URL(cardType + '.png', baseUrl)})`;
                 flippedCards.push(this);
 
                 if (flippedCards.length === 2) {
@@ -149,8 +149,8 @@
                 setTimeout(() => {
                     card1.classList.remove('flipped');
                     card2.classList.remove('flipped');
-                    card1.style.backgroundImage = `url("${baseUrl}card_close.png")`;
-                    card2.style.backgroundImage = `url("${baseUrl}card_close.png")`;
+                    card1.style.backgroundImage = `url(${new URL('card_close.png', baseUrl)})`;
+                    card2.style.backgroundImage = `url(${new URL('card_close.png', baseUrl)})`;
                 }, 500);
             }
             flippedCards = [];
