@@ -15,7 +15,7 @@
         let score = 0;
         let timeLeft = 60;
         let timerInterval;
-        let currentLanguage = 'ka';
+        let currentLanguage = 'en';
         let preloadedImages = {};
 
         const translations = {
@@ -115,8 +115,8 @@
             });
         }
 
-        function updateLanguage() {
-            currentLanguage = languageSelect.value;
+        function updateLanguage(currentLanguage) {
+            //currentLanguage = currentLanguage;
             const elements = {
                 'start-title': translations[currentLanguage].instruction,
                 'start-instruction': translations[currentLanguage].instruction,
@@ -334,12 +334,13 @@
 
         
 
-        languageSelect.addEventListener('change', updateLanguage);
+        //languageSelect.addEventListener('change', updateLanguage);
 
         // Загрузка изображений перед началом игры
         preloadImages().then(() => {
             showStartPopup();
             initGame();
+            updateLanguage();
         }).catch(error => {
             console.error('Failed to load images:', error);
             // Здесь можно добавить обработку ошибки загрузки изображений
