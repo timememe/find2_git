@@ -15,7 +15,7 @@
         let score = 0;
         let timeLeft = 60;
         let timerInterval;
-        let currentLanguage = container.getAttribute('lang') || 'ka';
+        let currentLanguage = container.getAttribute('lang') || 'kk';
         let preloadedImages = {};
 
         const translations = {
@@ -115,7 +115,7 @@
             });
         }
 
-        function updateLanguage(currentLanguage) {
+        function updateLanguage() {
             //currentLanguage = currentLanguage;
             const elements = {
                 'start-title': translations[currentLanguage].instruction,

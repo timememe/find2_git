@@ -115,7 +115,7 @@
             });
         }
 
-        function updateLanguage(currentLanguage) {
+        function updateLanguage() {
             //currentLanguage = currentLanguage;
             const elements = {
                 'start-title': translations[currentLanguage].instruction,
