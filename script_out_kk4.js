@@ -282,7 +282,7 @@
         function showEndPopup() {
             container.querySelector('#end-popup').style.display = 'flex';
             container.querySelector('#final-score').textContent = score;
-            sendGameResult('game1', 'lose', 'kz');
+            sendGameResult('game1', 'loss', 'kz');
         }
 
         function hidePopups() {
