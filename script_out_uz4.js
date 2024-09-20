@@ -276,13 +276,13 @@
             container.querySelector('#win-popup').style.display = 'flex';
             container.querySelector('#win-score').textContent = score;
             awardPoints(1);
-            sendGameResult('game1', 'win', 'ru');
+            sendGameResult('game1', 'win', 'uz');
         }
 
         function showEndPopup() {
             container.querySelector('#end-popup').style.display = 'flex';
             container.querySelector('#final-score').textContent = score;
-            sendGameResult('game1', 'loss', 'ru');
+            sendGameResult('game1', 'loss', 'uz');
         }
 
         function hidePopups() {
